@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Simples from './componentes/Simples'
 import ParImpar from './componentes/ParImpar'
-import {Inverter, MegaSena} from './componentes/multi'
+import {Inverter, MegaSena} from './componentes/Multi'
 
 export default function App() {
   return (
