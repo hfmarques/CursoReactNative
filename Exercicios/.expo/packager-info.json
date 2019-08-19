@@ -1,10 +1,10 @@
 {
-  "expoServerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://ki-nv4.anonymous.exercicios.exp.direct",
+  "packagerNgrokUrl": "https://packager.ki-nv4.anonymous.exercicios.exp.direct",
+  "ngrokPid": 8400,
   "devToolsPort": 19002,
-  "packagerPort": null,
-  "packagerPid": null,
-  "webpackServerPort": null
+  "packagerPort": 19001,
+  "packagerPid": 2440,
+  "webpackServerPort": 19006
 }
