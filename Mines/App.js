@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import params from './src/Params'
+import Field from './src/Components/Field';
 
 export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Iniciando o Mines!</Text>
-        <Text style={styles.instructions}>Tamanho da Grade: {params.getColumnsAmount()} x {params.getRowsAmount()}</Text>
+        <Text style={styles.instructions}>Tamanho da Grade: {params.getRowsAmount()} x {params.getColumnsAmount()}</Text>
+
+        <Field></Field>
+        <Field opened></Field>
+        <Field opened nearMines={1}></Field>
+        <Field opened nearMines={2}></Field>
+        <Field opened nearMines={3}></Field>
+        <Field opened nearMines={6}></Field>
+        <Field mined></Field>
+        <Field mined opened></Field>
+        <Field mined opened exploded></Field>
+        <Field flagged></Field>
+        <Field flagged opened></Field>
       </View>
     );
   }
