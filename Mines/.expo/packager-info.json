@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
-  "webpackServerPort": null
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 8020,
+  "expoServerNgrokUrl": "https://gi-yut.anonymous.mines.exp.direct",
+  "packagerNgrokUrl": "https://packager.gi-yut.anonymous.mines.exp.direct",
+  "ngrokPid": 15024,
+  "webpackServerPort": 19006
 }
