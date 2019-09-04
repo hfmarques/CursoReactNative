@@ -1,0 +1,10 @@
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 44216,
+  "expoServerNgrokUrl": "https://5d-exv.anonymous.tasks.exp.direct",
+  "packagerNgrokUrl": "https://packager.5d-exv.anonymous.tasks.exp.direct",
+  "ngrokPid": 21976,
+  "webpackServerPort": 19006
+}
