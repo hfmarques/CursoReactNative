@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Alert } from 'react-native';
 import params from './src/Params'
 import Field from './src/Components/Field';
-import { createMinedBoard, cloneBoard, openField, hadExplosion, wonGame, showMines } from './src/Functions';
+import { createMinedBoard, cloneBoard, openField, hadExplosion, wonGame, showMines, invertFlag } from './src/Functions';
 import MineField from './src/Components/MineField';
 
 export default class App extends Component {
@@ -47,6 +47,18 @@ export default class App extends Component {
         this.setState({board, lost, won})
     }
 
+    onSelectField = (row, column) => {
+        const board = cloneBoard(this.state.board)
+        invertFlag(board, row, column)
+        const won = wonGame(board)
+
+        if(won){
+            Alert.alert('Parabéns', 'Você venceu!')
+        }
+
+        this.setState({board, won})
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -54,7 +66,7 @@ export default class App extends Component {
                 <Text style={styles.instructions}>Tamanho da Grade: {params.getRowsAmount()} x {params.getColumnsAmount()}</Text>
 
                 <View style={styles.board}>
-                    <MineField board={this.state.board} onOpenField={this.onOpenField}>
+                    <MineField board={this.state.board} onOpenField={this.onOpenField} onSelectField={this.onSelectField}>
 
                     </MineField>
                 </View>
