@@ -54,6 +54,19 @@ export default class AddTask extends Component {
     }
 
     render() {
+        let datePicker = null
+        if (Platform.OS === 'ios') {
+            datePicker = <DatePickerIOS mode='date' date={this.state.date}
+                onDateChange={date => this.setState({ date })} />
+        } else {
+            datePicker = (
+                <TouchableOpacity onPress={this.handleDateAndroidChanged}>
+                    <Text style={styles.date}>
+                        {moment(this.state.date).format('ddd, D [de] MMMM [de] YYYY')}
+                    </Text>
+                </TouchableOpacity>
+            )
+        }
         return (
             <Modal onRequestClose={this.props.onCancel} visible={this.props.isVisible} animationType='slide' transparent={true}>
                 <TouchableWithoutFeedback onPress={this.props.onCancel}>
@@ -64,7 +77,7 @@ export default class AddTask extends Component {
                     <TextInput placeholder="Descricao..." style={styles.input} 
                         onChangeText={desc => this.setState({ desc })} 
                         value={this.state.desc}></TextInput>
-                    <DatePickerIOS mode='date' date={this.state.date}></DatePickerIOS>
+                        {datePicker}
                     <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
                         <TouchableOpacity onPress={this.save}>
                             <Text style={styles.button}>Salvar</Text>

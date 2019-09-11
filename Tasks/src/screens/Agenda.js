@@ -6,7 +6,8 @@ import {
     ImageBackground,
     FlatList,
     TouchableOpacity,
-    Platform
+    Platform,
+    AsyncStorage
 } from 'react-native'
 // import axios from 'axios'
 import moment from 'moment'
@@ -25,37 +26,15 @@ import monthImage from '../../assets/imgs/month.jpg'
 
 export default class Agenda extends Component {
     state = {
-        tasks: [
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-            { id: Math.random(), desc: 'Compar curso de React Native', estimateAt: new Date(), doneAt: new Date() },
-            { id: Math.random(), desc: 'Concluir curso de React Native', estimateAt: new Date(), doneAt: null },
-        ],
+        tasks: [],
         visibleTasks: [],
         showDoneTasks: true,
         showAddTask: false,
+    }
+
+    deleteTask = id => {
+        const tasks = this.state.tasks.filter(task => task.id !== id)
+        this.setState({ tasks}, this.filterTasks)
     }
 
     filterTasks = () => {
@@ -68,6 +47,7 @@ export default class Agenda extends Component {
             visibleTasks = this.state.tasks.filter(pending)
         }
         this.setState({ visibleTasks })
+        AsyncStorage.setItem('tasks', JSON.stringify(this.state.tasks))
     }
 
     addTask = task => {
@@ -75,19 +55,21 @@ export default class Agenda extends Component {
         tasks.push({
             id: Math.random(),
             desc: task.desc,
-            estimateAt: task.date, 
+            estimateAt: task.date,
             doneAt: null,
         })
 
-        this.setState({tasks, showAddTask: false}, this.filterTasks)
+        this.setState({ tasks, showAddTask: false }, this.filterTasks)
     }
 
     toggleFilter = () => {
         this.setState({ showDoneTasks: !this.state.showDoneTasks }, this.filterTasks)
     }
 
-    componentDidMount = () => {
-        this.filterTasks()
+    componentDidMount = async () => {
+        const data = await AsyncStorage.getItem('tasks')
+        const tasks = JSON.parse(data) || [];
+        this.setState({tasks}, this.filterTasks)
     }
 
     toggleTask = id => {
@@ -104,9 +86,9 @@ export default class Agenda extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <AddTask isVisible={this.state.showAddTask} 
-                    onSave={this.addTask} 
-                    onCancel={() => this.setState({showAddTask: false})}></AddTask>
+                <AddTask isVisible={this.state.showAddTask}
+                    onSave={this.addTask}
+                    onCancel={() => this.setState({ showAddTask: false })}></AddTask>
                 <ImageBackground source={todayImage}
                     style={styles.background}>
                     <View style={styles.iconBar}>
@@ -124,9 +106,9 @@ export default class Agenda extends Component {
                 <View style={styles.taksContainer}>
                     <FlatList data={this.state.visibleTasks}
                         keyExtractor={item => `${item.id}`}
-                        renderItem={({ item }) => <Task {...item} toggleTask={this.toggleTask}></Task>}></FlatList>
+                        renderItem={({ item }) => <Task {...item} onToggleTask={this.toggleTask} onDelete={this.deleteTask}></Task>}></FlatList>
                 </View>
-                <ActionButton buttonColor={commonStyles.colors.today} onPress={()=> this.setState({showAddTask:true})}></ActionButton>
+                <ActionButton buttonColor={commonStyles.colors.today} onPress={() => this.setState({ showAddTask: true })}></ActionButton>
             </View >
         )
     }
