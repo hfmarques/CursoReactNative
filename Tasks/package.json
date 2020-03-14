@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "acorn": "^7.0.0",
+    "acorn": "^7.1.1",
     "expo": "^34.0.1",
     "moment": "^2.24.0",
     "react": "^16.8.3",
